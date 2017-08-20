@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>onbeforeunload</title>
+	<style>
+		body{
+			margin: 0;
+			padding: 0;
+			height: 100vh;
+			background: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1503233913895&di=395e8d1a21fe32f11678edfd77be6d63&imgtype=0&src=http%3A%2F%2Fimg02.tooopen.com%2Fimages%2F20131206%2Fsy_50419061827.jpg') no-repeat ;
+			background-size: cover;
+		}
+	</style>
+</head>
+<body>
+	<h1>JavaScript如何在离开页面时提示用户</h1>
+
+	<script>
+	//不执行因为回调是异步
+
+	// var is_uploading = true; //标志位设置
+
+	// function alert_if_uploading() {
+	//     if (is_uploading)
+	//         return '文件正在上传中，您确定要离开当前页面？';
+	// }
+
+	// window.onbeforeunload = alert_if_uploading;
+
+	window.onbeforeunload = function(e) {
+	  var dialogText = 'Dialog text here';
+	  e.returnValue = dialogText;
+	  return dialogText;
+	};
+	
+	</script>
+</body>
+</html>
