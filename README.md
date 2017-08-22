@@ -6,3 +6,6 @@ do some excise and write note to review javascript
 
 ## day2
 - goTop
+
+## day3
+- easy template
