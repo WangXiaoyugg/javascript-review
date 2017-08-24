@@ -9,3 +9,6 @@ do some excise and write note to review javascript
 
 ## day3
 - easy template
+
+## day4
+- assert 测试函数未完
