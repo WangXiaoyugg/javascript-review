@@ -3,16 +3,186 @@
 <head>
 	<meta charset="UTF-8">
 	<title>assert函数</title>
+	<style>
+		#results li.pass {color:green;}
+		#results li.fail {color:red;}
+	</style>
 </head>
 <body>
+	<ul id="results"></ul>
 	<script>
-		var start = new Date().getTime();
-		var maxCount = 100
-		for(var n=0;n< maxCount;n++){
-			//perform the operation to be measured
+		// var start = new Date().getTime();
+		// var maxCount = 100
+		// for(var n=0;n< maxCount;n++){
+		// 	//perform the operation to be measured
+		// }
+		// var elapsed = new Date().getTime() - start;
+		// assert(true,'Measured time : ' + elapsed);
+
+		//log
+		// function log(){
+		// 	try {
+		// 		console.log.apply(console,arguments);
+		// 	} catch (e) {
+		// 		try {
+		// 			opera.postError.apply(opera,arguments)
+		// 		} catch (e) {
+		// 			alert(Array.prototype.join.call(arguments,' '))
+		// 		}
+		// 	}
+		// }
+		// var x = 1232;
+		// log(x);
+
+		//assert
+		// function assert(value,desc){
+		// 	var li = document.createElement('li')
+		// 	li.className = value ? 'pass' : 'fail';
+		// 	li.appendChild(document.createTextNode(desc));
+		// 	document.getElementById('results').appendChild(li)
+		// }
+
+		// window.onload = function(){
+		// 	assert(true,'test suite is running');
+		// 	assert(false,'Fail');
+		// }
+
+		//测试组,只要有一个fail就全部fail;
+
+		// (function() {
+		// 	var results;
+		// 	console.log('this',this);
+		// 	this.assert = function assert(value,desc) {
+		// 		var li = document.createElement('li');
+		// 		li.className = value ? 'pass' : 'fail';
+		// 		li.appendChild(document.createTextNode(desc));
+		// 		results.appendChild(li);
+		// 		if(!value){
+		// 			li.parentNode.parentNode.className = 'fail'
+		// 		}
+		// 		return li
+		// 	}
+		// 	this.test = function test(name, fn){
+		// 		results = document.getElementById('results');
+				
+		// 		//在每一个测试组中产生一个新的 ul包含测试子项
+		// 		results = assert(true,name).appendChild(
+		// 			document.createElement('ul')
+		// 		)
+				
+		// 		fn();
+		// 	}
+		// })()
+
+		// window.onload = function(){
+		// 	test('A test',function(){
+		// 		assert(true,'First assertion completed')
+		// 		assert(true,'Second assertion completed')
+		// 		assert(true,'Third assertion completed')
+		// 	})
+
+		// 	test('B test',function(){
+		// 		assert(true,'First test completed')
+		// 		assert(false,'Second test failed')
+		// 		assert(true,'Third test completed')
+		// 	})
+
+		// 	test('A test',function(){
+		// 		assert(null,'fail')
+		// 		assert(5,'pass')
+		// 	})
+
+		// }
+
+		//异步测试
+
+		(function() {
+			var queue = [],
+				paused = false,
+				results ;
+			this.test = function(name,fn){
+				queue.push(function() {
+					results = document.getElementById('results');
+					results = assert(true,name).appendChild(
+						document.createElement('ul')	
+					)
+					fn();	
+				})
+				runTest()
+			};
+
+			this.pause = function(){
+				paused = true;
+			}
+
+			this.resume = function(){
+				paused = false;
+				setTimeout( runTest,1)
+			}
+
+			function runTest(){
+				if(!paused && queue.length){
+					queue.shift();
+					if(!paused){
+						resume()
+					}
+				}
+			}
+
+			this.assert = function assert(value,desc){
+				var li = document.createElement('li')
+				li.className = value ? 'pass':'fail'
+				li.appendChild(document.createTextNode(desc))
+				results.appendChild(li)
+				if(!value){
+					li.parentNode.parentNode.className = 'fail'
+				}
+				return li;
+			}
+
+		})()
+
+		window.onload = function (){
+
+			test('async test #1',function(){
+				pause();
+				setTimeout(function(){
+					assert(true,'First test completed')
+					resume()
+				},1000)
+			})
+
+			test('async test #2',function(){
+				pause();
+				setTimeout(function(){
+					assert(true,'Second test completed')
+					resume()
+				},1000)
+			})
 		}
-		var elapsed = new Date().getTime() - start;
-		assert(true,'Measured time : ' + elapsed);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	</script>
 </body>
 </html>

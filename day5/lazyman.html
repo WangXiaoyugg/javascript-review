@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lazyman</title>
+</head>
+<body>
+	<script>
+		function Lazyman(name){
+
+			var queue = [];
+			queue.push(()=>{
+			    console.log(`Hi！，This is ${name}`);
+			})
+			setTimeout(()=>{
+			  api._checkQueue()
+			},0)
+			let api = {
+				queue: queue,
+				timer: null,
+				firstTimer:null;
+				_checkQueue:function(){
+					if (!this.timer) {
+						this._execQueue();
+					}	
+				},
+				_checkFirstQueue:function(){
+					if (!this.firstTimer) {
+						this._execQueue();
+					}	
+				},
+				_checkAll:function(){
+					if(!this.firstTimer && !this.timer){
+						this._execQueue();
+					}
+				}
+				_execQueue:function(){
+					let fn = this.queue.shift();
+					while(fn){
+						fn.call()
+						fn = this.queue.shift();
+					}
+					this.timer = null;	
+				},
+				sleep:function(second){
+					console.log(`Wake Up after ${second}s`)
+					this.timer = setTimeout(()=>{
+						this._execQueue();
+					},second * 1000)
+					return this;
+				},
+				sleepFirst:function(second){
+					console.log(`Wake Up after ${second}s`)
+					this.firstTimer = setTimeout(()=>{
+						this._execQueue();
+					},second * 1000)
+					return this;
+				},
+				eat:function(what){
+					this.queue.push(()=>{
+						console.log(`Eat ${what}~`)	
+					})
+					this._checkQueue();
+					return this;
+				}
+			}
+			return api;
+		}
+		// Lazyman('Hank')
+		// Lazyman('Hank').sleep(10).eat('dinner');
+		Lazyman('Hank').eat('lanuch').eat('dinner');
+	</script>
+</body>
+</html>

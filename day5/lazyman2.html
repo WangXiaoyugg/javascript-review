@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>lazyman2</title>
+</head>
+<body>
+	<script>
+		function LazyMan(name){
+			let api = {
+				sleep:function(seconds){
+					taskList.push(function(){
+						setTimeout(function(){
+							console.log(`Wake up after ${seconds}`);
+							doOneThing()
+						},seconds*1000)
+					})
+					return this;
+				},
+				eat:function(what){
+					taskList.push(function(){
+						console.log(`Eat ${what}`)
+						doOneThing()
+					})
+					return this;
+
+				},
+				sleepFirst:function(seconds){
+					taskList.unshift(function(){
+						setTimeout(function(){
+							console.log(`Wake up after ${seconds}`)
+							doOneThing()
+						})
+					})
+					return this;
+				},
+				hi:function(name){
+					taskList.push(function(){
+						console.log(`Hi,this is ${name}`)
+						doOneThing()
+					})
+					return this;
+				}
+			}
+			let taskList = [];
+			let doOneThing = function(){
+				let fn = taskList.shift();
+				fn && fn.call()
+			}
+
+			api.hi(name);
+			setTimeout(function(){
+				doOneThing()
+			},0)
+			return api;
+			
+		}	
+
+		// LazyMan('Hank');
+		// LazyMan('Hank').sleep(5).eat('dinner');
+		// LazyMan('Hank').eat('dinner').eat('supper');
+		LazyMan('Hank').sleepFirst(5).eat('supper');
+
+	</script>
+</body>
+</html>
