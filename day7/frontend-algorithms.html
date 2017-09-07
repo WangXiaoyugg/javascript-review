@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>前端基础算法</title>
+</head>
+<body>
+	<script>
+		//log 函数 
+		const log = console.log.bind(console);
+
+		//检测回文数
+		function checkPalindrom(str){
+			return str === str.split('').reverse().join('');
+		}
+
+		// log(checkPalindrom('123231231'))
+		// log(checkPalindrom('121'));
+
+		//数组去重
+		//此数组去重利用了对象键的唯一性；
+		let unique = function (arr){
+			let hashTable = {};
+			let data = [];
+			for(let i=0; i<arr.length;i++){
+				if(!hashTable[arr[i]]){
+					hashTable[arr[i]] = true;
+					data.push(arr[i])
+				}
+			}
+
+			return data;
+		}
+
+		const arr = [1,13,24,11,11,14,1,2] ;
+		log(unique(arr));
+
+
+	</script>
+</body>
+</html>
+
