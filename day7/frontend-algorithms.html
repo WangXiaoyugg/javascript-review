@@ -32,9 +32,247 @@
 			return data;
 		}
 
-		const arr = [1,13,24,11,11,14,1,2] ;
-		log(unique(arr));
+		
+		// log(unique(arr));
 
+		//统计字符串中出现最多的英文
+		function findMaxDuplicateChar(str){
+			if(str.length === 1){
+				return str;
+			}
+			let charObj = {};
+			
+			for(let i=0;i<str.length;i++){
+				if(!charObj[str.charAt(i)]){
+					charObj[str.charAt(i)] = 1;
+				}else{
+					charObj[str.charAt(i)] +=1;
+				}
+			}
+
+			let maxChar = '';
+			let maxValue =1;
+			for(var k in charObj){
+				if(charObj[k] >= maxValue){
+					maxChar = k;
+					maxValue = charObj[k];
+				}
+			}
+
+			return maxChar;
+		}
+
+		// log(findMaxDuplicateChar('abcdaedadada'));
+		
+		//冒泡排序
+		function bubbleSort(arr){
+			for(let i=0;i<arr.length-1;i++){
+				for(let j=i+1;j<arr.length;j++){
+					if(arr[i] > arr[j]){
+						let temp = arr[i];
+							arr[i] = arr[j];
+							arr[j] = temp;
+					}
+				}
+			}
+			return arr;
+		}			
+
+		const arr = [1,13,24,11,11,14,1,2] ;		
+		// log(bubbleSort(arr));
+
+		//快速排序
+		function quickSort(arr){
+			
+			if(arr.length <= 1){
+				return arr;
+			}
+
+			let leftArr = [];
+			let rightArr = [];
+			let q = arr[0];
+
+			for(let i=1;i<arr.length;i++){
+				if(arr[i] > q){
+					rightArr.push(arr[i])
+				}else{
+					leftArr.push(arr[i])
+				}
+			}
+
+			return [].concat(quickSort(leftArr),[q],quickSort(rightArr));
+		}
+
+		//两个整数交换
+		function swap(a,b){
+			b = b-a;
+			a = a+b;
+			b = a-b;
+			return [a,b]
+		}
+
+		//生成斐波那契数组的方法
+		function genFib(n){
+			var fib = [];
+			var i = 0;
+			while(i<n){
+				if(i<=1){
+					fib.push(i)
+				}else {
+					fib.push(fib[i-1] + fib[i-2])
+				}
+				i++
+			}
+			return fib;
+		}
+
+		//找出正数组的最大差值比
+		function getMaxProfit(arr){
+			var minPrice = arr[0];
+			var maxProfit = 0;
+			for(var i=0;i<arr.length;i++){
+				var currentPrice = arr[i];
+				minPrice = Math.min(minPrice,currentPrice);
+				var protentialProfit = currentPrice - minPrice;
+				maxProfit = Math.max(maxProfit,protentialProfit);
+			}
+			
+			return maxProfit;
+		}
+
+		//随机生成指定长度的字符串
+		function randomString(n){
+			  let str = 'abcdefghijklmnopqrstuvwxyz9876543210';
+			  let temp = '';
+			  
+			 let l = str.length;
+			  for(let i=0;i<n;i++){
+			  	temp = str.charAt(Math.floor(Math.random()*l))
+			  }
+			  return temp;
+		}	
+
+		//实现getElementsByClassName 的功能
+		function queryClassName(node,name){
+			var starts = '(^|[\n\t\r\f])',
+				ends = '([\n\r\t\f]|$)'
+			var array = [];
+			var regex = new new RegExp(starts+ name +ends),
+				elements = node.getElementsByTagName('*');
+				length = elements.length;
+				i = 0,
+				element;
+
+			while(i<length){
+				element = elements[i];
+				if(regex.test(element.className)){
+					array.push(element)
+				}
+				i += 1;
+			}
+			return array;
+		}
+
+		// js 实现二叉树查找
+		classs Node {
+			constructor(data,left,right){
+				this.data = data;
+				this.left = left;
+				this.right = right;
+			}
+		}
+
+		class BinarySearchTree {
+			constructor(){
+				this.root = null;
+			}
+
+			insert(data){
+				let n = new Node(data,null,null);
+				if(!this.root){
+					return this.root = n;
+				}
+
+				let currentNode = this.root;
+				let parent = null;
+				while(true){
+					parent = currentNode;
+					if(data <currentNode.data){
+						currentNode = currentNode.left;
+						if(currentNode === null){
+							parent.left = n;
+							break;
+						}
+					}else {
+						currentNode = currentNode.right;
+						if(currentNode === null){
+							parent.right = n;
+							break;
+						}
+					}
+				}
+			}
+
+			remove(data){
+				this.root = this.removeNode(this.root,data)
+			}
+
+			removeNode(node,data){
+				if(node === null){
+					return null
+				}
+				
+				if(data === node.data){
+					if(node.left === null && node.right === null){
+							return null;
+					}
+					if(node.left === null){
+						return node.right
+					}
+					if(node.right === null){
+						return node.left;
+					}
+					let getSmallest = function (node){
+						if(node.left === null && node.right === null){
+							return node;
+						}
+						if(node.left !== null){
+							return node.left;
+						}
+						if(node.right !== null){
+							return getSmallest(node.right)
+						}
+					}
+					let tempNode = getSmallest(node.right);
+					node.data = tempNode.data;
+					node.right = this.removeNode(tempNode.right,tempNode.data);
+					return node;
+				}else if(data <node.data){
+					node.left = this.removeNode(node.left,data);
+					return node;
+				}else {
+					node.right = this.removeNode(node.right,data)
+					return node;
+				}
+			}
+
+			find(data){
+				var current = this.root;
+				while(current !== null){
+					if(data === current.data){
+						break;
+					}
+					if(data <current.data){
+						current = current.left;
+					}else {
+						current = current.right;
+					}
+				}
+				return current.data;
+			}
+
+			
+		}
 
 	</script>
 </body>
